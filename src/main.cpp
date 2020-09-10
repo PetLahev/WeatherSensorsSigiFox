@@ -1,88 +1,103 @@
-#include <Arduino.h>
 #include <OneWire.h>
 #include <DallasTemperature.h>
 #include <SoftwareSerial.h>
 
 const int sigFoxTXpin = 9;
 const int sigFoxRXpin = 8;
-const int pinSensors = 4;
+const int pinSensorCourt = 4;
+const int pinSensorOutside = 5;
 
 const int halfMinuteDelay = 30000;
 unsigned long lastSend = 0;
 
-OneWire oneWireDS(pinSensors);
-DallasTemperature sensorsDS(&oneWireDS);
+OneWire oneWireCourt(pinSensorCourt);
+OneWire oneWireOutside(pinSensorOutside);
+DallasTemperature sensorCourt(&oneWireCourt);
+DallasTemperature sensorOutside(&oneWireOutside);
 SoftwareSerial Sigfox(sigFoxRXpin, sigFoxTXpin);
 
-void sendData(unsigned int avgTemperature);
+void sendData(unsigned int tempCourt, unsigned int tempOutside);
 
-void setup() {
+void setup()
+{
   Serial.begin(9600);
-  sensorsDS.begin();
+  sensorCourt.begin();
+  sensorOutside.begin();
   Sigfox.begin(9600);
   lastSend = 0;
   Serial.println("Vse nastaveno!");
 }
 
-void loop() {
+void loop()
+{
 
+  float temperatures[2] = {0, 0};
   Serial.println("Zacinam merit 4x po 5 sekundach");
-  float temperatures = 0;
   for (size_t i = 0; i < 4; i++)
   {
-    sensorsDS.requestTemperatures();
-    temperatures += sensorsDS.getTempCByIndex(0);
+    sensorCourt.requestTemperatures();
+    temperatures[0] += sensorCourt.getTempCByIndex(0);
+    sensorOutside.requestTemperatures();
+    temperatures[1] += sensorOutside.getTempCByIndex(1);
     delay(5000);
   }
 
-  float avgTemperature = temperatures/(float)4.0;
+  float avgTempCourt = temperatures[0] / (float)4.0;
+  float avgTempOutside = temperatures[1] / (float)4.0;
   Serial.print("Teplota cidla kurt: ");
-  Serial.print(avgTemperature);
+  Serial.print(avgTempCourt);
+  Serial.println(" C");
+
+  Serial.print("Teplota cidla vzduch: ");
+  Serial.print(avgTempOutside);
   Serial.println(" C");
 
   // Test SigFox
   // testSigFox();
+  Serial.print("Seconds ");
+  Serial.println((millis() / 1000));
+  Serial.print("Last send ");
+  Serial.println(lastSend);
 
   // send the date ti SigFox only if the interval is equal or greater than 12 minutes (720 sec)
-  if (lastSend == 0 || ((millis()/1000) - lastSend) >= 720) {
-    sendData(avgTemperature * 100);
+  if (lastSend == 0 || ((millis() / 1000) - lastSend) >= 720)
+  {
+    sendData(avgTempCourt * 100, avgTempOutside * 100);
     Serial.println("Data sent");
-    lastSend = millis()/1000;
+    lastSend = millis() / 1000;
   }
 
   delay(halfMinuteDelay);
 }
 
-void sendData(unsigned int avgTemperature) {
+void sendData(unsigned int tempCourt, unsigned int tempOutside)
+{
 
   char message[12];
-  sprintf(message, "%04X%04X%04X", avgTemperature,0,0);
+  sprintf(message, "%04X%04X%04X", tempCourt, tempOutside, 0);
   Serial.print("Odeslani dat do Sigfox site, odesilam: ");
-  Serial.print(avgTemperature);
-  Serial.print(", hexa tvar: ");
+  Serial.print(tempCourt);
+  Serial.print(" kurt, ");
+  Serial.print(tempOutside);
+  Serial.print(" vzduch, hexa tvar: ");
   Serial.println(message);
 
-  /* WATCH OUT
-    While running via USB port with Arduino Nano
-    these two SigFox commands below will cause overflow.
-    It's running fine when not connected to USB
-  */
-  delay(500);
-  Sigfox.print("AT$SF=");
-  Sigfox.println(message);
-
-  lastSend = millis()/1000;
-  delay(500);
+  delay(1000);
+  //Sigfox.print("AT$SF=");
+  //Sigfox.println(message);
+  delay(1000);
 }
 
-void testSigFox() {
+void testSigFox()
+{
 
-  if (Sigfox.available()) {
+  if (Sigfox.available())
+  {
     Serial.write(Sigfox.read());
   }
 
-  if (Serial.available()) {
+  if (Serial.available())
+  {
     Sigfox.write(Serial.read());
   }
-
 }
