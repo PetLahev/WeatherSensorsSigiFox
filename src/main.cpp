@@ -83,8 +83,8 @@ void sendData(unsigned int tempCourt, unsigned int tempOutside)
   Serial.println(message);
 
   delay(1000);
-  //Sigfox.print("AT$SF=");
-  //Sigfox.println(message);
+  Sigfox.print("AT$SF=");
+  Sigfox.println(message);
   delay(1000);
 }
 
