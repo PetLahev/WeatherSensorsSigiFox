@@ -22176,6 +22176,9 @@ W = angled&lt;p&gt;
 <sheets>
 <sheet>
 <plain>
+<text x="38.1" y="73.66" size="1.778" layer="97">S</text>
+<text x="43.942" y="70.358" size="1.778" layer="97">G</text>
+<text x="46.482" y="73.914" size="1.778" layer="97">D</text>
 </plain>
 <instances>
 <instance part="IC1" gate="A1" x="-5.08" y="83.82"/>
@@ -22334,7 +22337,7 @@ W = angled&lt;p&gt;
 <pinref part="TR1" gate="1" pin="S3"/>
 </segment>
 </net>
-<net name="N$4" class="0">
+<net name="S" class="0">
 <segment>
 <pinref part="9V" gate="K" pin="K1"/>
 <wire x1="-78.74" y1="50.8" x2="27.94" y2="50.8" width="0.1524" layer="91"/>
@@ -22545,7 +22548,7 @@ W = angled&lt;p&gt;
 <wire x1="-78.74" y1="-5.08" x2="-81.28" y2="-5.08" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="N$5" class="0">
+<net name="G" class="0">
 <segment>
 <pinref part="IC1" gate="A1" pin="VO"/>
 <pinref part="C2" gate="G$1" pin="+"/>
@@ -22583,7 +22586,7 @@ W = angled&lt;p&gt;
 <pinref part="F1" gate="G$1" pin="1"/>
 </segment>
 </net>
-<net name="N$22" class="0">
+<net name="A0" class="0">
 <segment>
 <pinref part="ARDUINO_NANO1" gate="G$1" pin="ADC0/A0"/>
 <pinref part="X6" gate="-1" pin="KL"/>
@@ -22591,7 +22594,7 @@ W = angled&lt;p&gt;
 <wire x1="38.1" y1="7.62" x2="38.1" y2="-10.16" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="N$23" class="0">
+<net name="A1" class="0">
 <segment>
 <pinref part="ARDUINO_NANO1" gate="G$1" pin="ADC1/A1"/>
 <pinref part="X6" gate="-2" pin="KL"/>
@@ -22599,7 +22602,7 @@ W = angled&lt;p&gt;
 <wire x1="43.18" y1="10.16" x2="43.18" y2="-10.16" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="N$24" class="0">
+<net name="A2" class="0">
 <segment>
 <pinref part="ARDUINO_NANO1" gate="G$1" pin="ADC2/A2"/>
 <pinref part="X6" gate="-3" pin="KL"/>
@@ -22607,7 +22610,7 @@ W = angled&lt;p&gt;
 <wire x1="48.26" y1="12.7" x2="48.26" y2="-10.16" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="N$25" class="0">
+<net name="A3" class="0">
 <segment>
 <pinref part="ARDUINO_NANO1" gate="G$1" pin="ADC3/A3"/>
 <pinref part="X6" gate="-4" pin="KL"/>
