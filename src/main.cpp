@@ -38,7 +38,7 @@ void loop()
     sensorCourt.requestTemperatures();
     temperatures[0] += sensorCourt.getTempCByIndex(0);
     sensorOutside.requestTemperatures();
-    temperatures[1] += sensorOutside.getTempCByIndex(1);
+    temperatures[1] += sensorOutside.getTempCByIndex(0);
     delay(5000);
   }
 
@@ -59,7 +59,7 @@ void loop()
   Serial.print("Last send ");
   Serial.println(lastSend);
 
-  // send the date ti SigFox only if the interval is equal or greater than 12 minutes (720 sec)
+  // send the d ate ti SigFox only if the interval is equal or greater than 12 minutes (720 sec)
   if (lastSend == 0 || ((millis() / 1000) - lastSend) >= 720)
   {
     sendData(avgTempCourt * 100, avgTempOutside * 100);
@@ -90,7 +90,6 @@ void sendData(unsigned int tempCourt, unsigned int tempOutside)
 
 void testSigFox()
 {
-
   if (Sigfox.available())
   {
     Serial.write(Sigfox.read());
